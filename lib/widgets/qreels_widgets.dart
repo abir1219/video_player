@@ -33,7 +33,7 @@ Widget interactionWithUser({required IconData icons,String count="",required voi
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icons,color: Colors.white,size: 30.w,),
-          Text(count!,style: TextStyle(color: Colors.white,fontSize: 12.sp,fontWeight: FontWeight.bold),)
+          Text(count,style: TextStyle(color: Colors.white,fontSize: 12.sp,fontWeight: FontWeight.bold),)
         ],
       ),
     ),

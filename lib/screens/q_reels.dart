@@ -36,6 +36,9 @@ class _QReelsState extends State<QReels> {
           itemHeight: MediaQuery.of(context).size.height,
           itemCount: videos.length,
           scrollDirection: Axis.vertical,
+          autoplay: true,
+          // duration: 5,
+          // autoplayDelay: 3,
           itemBuilder: (context, index) {
             return Stack(
               children: [

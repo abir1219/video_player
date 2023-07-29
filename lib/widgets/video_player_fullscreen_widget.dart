@@ -11,11 +11,13 @@ class VideoPlayerFullscreenWidget extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
+
   @override
-  Widget build(BuildContext context) =>
-      controller != null && controller.value.isInitialized
-          ? Container(alignment: Alignment.topCenter, child: buildVideo())
-          :const Center(child: CircularProgressIndicator(backgroundColor: Colors.black,color: Colors.white,));
+  Widget build(BuildContext context) {
+    return controller != null && controller.value.isInitialized
+        ? Container(alignment: Alignment.topCenter, child: buildVideo())
+        :const Center(child: CircularProgressIndicator(backgroundColor: Colors.black,color: Colors.white,));
+  }
 
   Widget buildVideo() => Stack(
     fit: StackFit.expand,

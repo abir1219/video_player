@@ -37,7 +37,7 @@ class _QReelsState extends State<QReels> {
           itemCount: videos.length,
           scrollDirection: Axis.vertical,
           autoplay: true,
-          // duration: 5,
+         duration: 1000,
           // autoplayDelay: 3,
           itemBuilder: (context, index) {
             return Stack(

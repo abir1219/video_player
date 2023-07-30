@@ -36,6 +36,7 @@ dependencies:
   flutter_screenutil: ^5.8.4
 #  device_preview: ^1.1.0
   chewie: ^1.7.0
+  get: ^4.6.5
 
 
 

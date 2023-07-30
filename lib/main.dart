@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:video_reels_player/screens/q_reels.dart';
+
+import 'binding/controller_binding.dart';
 
 void main() {
   runApp(
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375,812),
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp(
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Video Reels',
           theme: ThemeData(
@@ -29,6 +32,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           home: const QReels(),
+          initialBinding: ControllerBinding(),
         );
       },
     );

@@ -1,6 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:video_reels_player/reels_controller.dart';
+import 'package:video_reels_player/screens/page_one.dart';
+import 'package:video_reels_player/screens/page_two.dart';
 import 'package:video_reels_player/widgets/reels_video.dart';
 
 import '../widgets/qreels_widgets.dart';
@@ -13,7 +18,7 @@ class QReels extends StatefulWidget {
 }
 
 class _QReelsState extends State<QReels> {
-  final List<String> videos = [
+  final List<dynamic> videos = [
     'https://assets.mixkit.co/videos/preview/mixkit-taking-photos-from-different-angles-of-a-model-34421-large.mp4',
     'https://assets.mixkit.co/videos/preview/mixkit-young-mother-with-her-little-daughter-decorating-a-christmas-tree-39745-large.mp4',
     'https://assets.mixkit.co/videos/preview/mixkit-mother-with-her-little-daughter-eating-a-marshmallow-in-nature-39764-large.mp4',
@@ -24,25 +29,37 @@ class _QReelsState extends State<QReels> {
     'https://wallpapercave.com/wp/wp3246752.jpg',
     'https://wallpapercave.com/wp/wp3246751.jpg',
     'https://wallpapercave.com/wp/wp3246753.jpg',
+    // PageOne(),
+    // PageTwo(),
   ];
+
+  final List<Widget> pages = [
+    const PageOne(),
+    const PageTwo(),
+  ];
+
+  var controller = Get.find<ReelsController>();
 
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Total Length=${controller.imageList.length+controller.imageList.length+controller.imageList.length}");
+
     return SafeArea(
       child: Scaffold(
         //backgroundColor: Colors.white,
         body: Swiper(
           itemHeight: MediaQuery.of(context).size.height,
-          itemCount: videos.length,
+          itemCount: videos.length,//controller.imageList.length+controller.imageList.length+controller.imageList.length,//videos.length,
           scrollDirection: Axis.vertical,
           autoplay: true,
-         duration: 1000,
+         duration: 1500,
           // autoplayDelay: 3,
           itemBuilder: (context, index) {
             return Stack(
               children: [
                 ReelsVideo(src: videos[index]),
+                // ReelsVideo(pages: pages[index]),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

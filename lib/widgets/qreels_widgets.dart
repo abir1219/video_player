@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_reels_player/widgets/reels_video.dart';
 
 Widget videoView(String src) {
-  return ReelsVideo(src: src);
+  return ReelsVideo(src: src, images: [], videos: [], mcq: [],);
 }
 
 Widget footerTag() {

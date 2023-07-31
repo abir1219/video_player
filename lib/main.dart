@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:video_reels_player/screens/new_reels.dart';
 import 'package:video_reels_player/screens/q_reels.dart';
 
 import 'binding/controller_binding.dart';
@@ -31,29 +32,10 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,
           ),
-          home: const QReels(),
+          home:const QReels(), //NewReels(),//const QReels(),
           initialBinding: ControllerBinding(),
         );
       },
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: Center(
-        child: Text("Home"),
-      ),
-    ));
   }
 }

@@ -2,8 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:video_reels_player/reels_controller.dart';
+import 'package:video_reels_player/controller/reels_controller.dart';
 import 'package:video_reels_player/screens/page_one.dart';
 import 'package:video_reels_player/screens/page_two.dart';
 import 'package:video_reels_player/widgets/reels_video.dart';
@@ -43,14 +42,17 @@ class _QReelsState extends State<QReels> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Total Length=${controller.imageList.length+controller.imageList.length+controller.imageList.length}");
+    debugPrint("Total Length=${controller.imageList.length+controller.videoList.length+controller.imageList.length}");
 
     return SafeArea(
       child: Scaffold(
         //backgroundColor: Colors.white,
         body: Swiper(
+          onIndexChanged: (index) {
+            controller.index.value = index;
+          },
           itemHeight: MediaQuery.of(context).size.height,
-          itemCount: videos.length,//controller.imageList.length+controller.imageList.length+controller.imageList.length,//videos.length,
+          itemCount: controller.videoList.length+1,//controller.imageList.length+controller.imageList.length+controller.imageList.length,//videos.length,
           scrollDirection: Axis.vertical,
           autoplay: true,
          duration: 1500,
@@ -58,8 +60,9 @@ class _QReelsState extends State<QReels> {
           itemBuilder: (context, index) {
             return Stack(
               children: [
-                ReelsVideo(src: videos[index]),
+                // ReelsVideo(src: videos[index]),
                 // ReelsVideo(pages: pages[index]),
+                ReelsVideo(images: controller.imageList, videos: controller.videoList, mcq: controller.mcqList),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

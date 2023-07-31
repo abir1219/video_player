@@ -37,6 +37,7 @@ dependencies:
 #  device_preview: ^1.1.0
   chewie: ^1.7.0
   get: ^4.6.5
+  carousel_slider: ^4.0.0
 
 
 

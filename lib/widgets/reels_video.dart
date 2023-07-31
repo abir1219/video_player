@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/file.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_reels_player/controller/reels_controller.dart';
+import 'package:video_reels_player/screens/page_one.dart';
 import 'package:video_reels_player/widgets/video_player_fullscreen_widget.dart';
 
 import '../model/reels_model.dart';
@@ -9,7 +12,16 @@ import '../model/reels_model.dart';
 class ReelsVideo extends StatefulWidget {
   final dynamic src;
 
-  const ReelsVideo({super.key, this.src});
+  final List<Images> images;
+  final List<Videos> videos;
+  final List<Mcq> mcq;
+
+  const ReelsVideo(
+      {super.key,
+      this.src,
+      required this.images,
+      required this.videos,
+      required this.mcq});
 
   @override
   State<ReelsVideo> createState() => _ReelsVideoState();
@@ -19,10 +31,15 @@ class _ReelsVideoState extends State<ReelsVideo> {
   late VideoPlayerController? _videoPlayerController;
   List<File> imageFile = [];
 
+  var controller = Get.find<ReelsController>();
+
   @override
   void initState() {
     _videoPlayerController = null;
-    if (widget.src != null) {
+    /*if (widget.src != null) {
+      _initializePlayer();
+    }*/
+    if (widget.videos.isNotEmpty) {
       _initializePlayer();
     }
     super.initState();
@@ -38,30 +55,27 @@ class _ReelsVideoState extends State<ReelsVideo> {
   }
 
   Future<void> _initializePlayer() async {
-    final fileInfo = await checkCacheFor(widget.src!);
-    if (fileInfo == null) {
-      debugPrint("File Info: Null}");
-      if (widget.src!.contains(".mp4")) {
-        _videoPlayerController =
-            VideoPlayerController.networkUrl(Uri.parse(widget.src!));
+    debugPrint(
+        "VIDEO[${controller.index.value}] => ${widget.videos[controller.index.value].videoUrl!}");
+
+    if (widget.videos.isNotEmpty) {
+      final fileInfo =
+          await checkCacheFor(widget.videos[controller.index.value].videoUrl);
+      // debugPrint("File Info=>${fileInfo}");
+      if (fileInfo == null) {
+        debugPrint("File Info: Null}");
+        _videoPlayerController = VideoPlayerController.networkUrl(
+            Uri.parse(widget.videos[controller.index.value].videoUrl!));
         await _videoPlayerController!.initialize().then((value) {
-          cachedForUrl(widget.src!);
+          cachedForUrl(widget.videos[controller.index.value].videoUrl);
           _videoPlayerController!.play();
           _videoPlayerController!.setLooping(true);
           _videoPlayerController!.setVolume(1);
           setState(() {});
         });
-      }
-      if (widget.src!.contains(".jpg")) {
-        cachedForUrl(widget.src!);
-      }
-    } else {
-      final file = fileInfo.file;
-      debugPrint("File Info: ${fileInfo.file.basename}");
-      if (widget.src!.contains(".jpg")) {
-        imageFile.add(file);
-      }
-      if (widget.src!.contains(".mp4")) {
+      } else {
+        final file = fileInfo.file;
+        debugPrint("File Info: ${fileInfo.file.basename}");
         _videoPlayerController = VideoPlayerController.file(file);
         await _videoPlayerController!.initialize().then((value) {
           _videoPlayerController!.play();
@@ -84,38 +98,29 @@ class _ReelsVideoState extends State<ReelsVideo> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.src != null
-        ? !widget.src!.contains(".jpg")
-            ? (_videoPlayerController != null)
-                ? ((_videoPlayerController!.value.isInitialized)
-                    ? VideoPlayerFullscreenWidget(
-                        controller: _videoPlayerController!)
-                    : const Text('Loading...'))
-                : const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      backgroundColor: Colors.black,
-                    ),
-                  )
-            //VideoPlayerFullscreenWidget(controller: _videoPlayerController)
-            : SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: imageFile.isNotEmpty
-                    ? Image.file(
-                        imageFile[0],
-                        fit: BoxFit.cover,
-                      )
-                    : Image.network(
-                        widget.src!,
-                        fit: BoxFit.cover,
-                      ),
-              )
-        : SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: widget.src,
-          );
+
+    if(widget.mcq.isNotEmpty){
+      return const PageOne();
+    }
+
+    if(_videoPlayerController != null && _videoPlayerController!.value.isInitialized){
+     return VideoPlayerFullscreenWidget(controller: _videoPlayerController!);
+    }
+
+    return Container();
+
+
+     // return PageOne();
+    /*return (_videoPlayerController != null)
+        ? ((_videoPlayerController!.value.isInitialized)
+            ? VideoPlayerFullscreenWidget(controller: _videoPlayerController!)
+            : const Text('Loading...'))
+        : const Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+              backgroundColor: Colors.black,
+            ),
+          );*/
 
     /*_videoPlayerController!.value.isInitialized
         ? AspectRatio(
@@ -131,14 +136,14 @@ class _ReelsVideoState extends State<ReelsVideo> {
   }
 
   //: check for cache
-  Future<FileInfo?> checkCacheFor(String url) async {
-    final FileInfo? value = await DefaultCacheManager().getFileFromCache(url);
+  Future<FileInfo?> checkCacheFor(String? url) async {
+    final FileInfo? value = await DefaultCacheManager().getFileFromCache(url!);
     return value;
   }
 
 //:cached Url Data
-  void cachedForUrl(String url) async {
-    await DefaultCacheManager().getSingleFile(url).then((value) {
+  void cachedForUrl(String? url) async {
+    await DefaultCacheManager().getSingleFile(url!).then((value) {
       print('downloaded successfully done for $url');
     });
   }
